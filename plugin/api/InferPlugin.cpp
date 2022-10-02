@@ -61,6 +61,8 @@ using namespace nvinfer1::plugin;
 #include "split.h"
 #include "voxelGenerator.h"
 
+#include "horus_update_max_trt_plugin.h"
+
 using nvinfer1::plugin::RPROIParams;
 
 namespace nvinfer1
@@ -207,6 +209,8 @@ extern "C"
         initializePlugin<nvinfer1::plugin::SpecialSlicePluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::SplitPluginCreator>(logger, libNamespace);
         initializePlugin<nvinfer1::plugin::VoxelGeneratorPluginCreator>(logger, libNamespace);
+
+        initializePlugin<nvinfer1::plugin::horus_update_max_plugin_creator>(logger, libNamespace);
         return true;
     }
 } // extern "C"
