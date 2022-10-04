@@ -65,6 +65,7 @@ set(PLUGIN_LISTS
     splitPlugin
     voxelGeneratorPlugin
     horus_update_max_trt_plugin
+    customMultExamplePlugin
     )
 
 # Add BERT sources if ${BERT_GENCODES} was populated
