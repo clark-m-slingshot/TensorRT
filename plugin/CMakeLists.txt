@@ -64,7 +64,7 @@ set(PLUGIN_LISTS
     specialSlicePlugin
     splitPlugin
     voxelGeneratorPlugin
-    horus_update_max_trt_plugin
+    horusUpdateMaxPlugin
     customMultExamplePlugin
     )
 
