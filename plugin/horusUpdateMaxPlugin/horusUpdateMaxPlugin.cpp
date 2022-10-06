@@ -106,30 +106,32 @@ int HorusUpdateMaxPlugin::enqueue(const nvinfer1::PluginTensorDesc* inputDesc,
 
     // std::this_thread::sleep_for(std::chrono::seconds(10));
 
-    // cuda memcpy into output buffers
-    if(cudaSuccess == cudaMemcpy(outputs[1], inputs[2], iC*iH*iW*sizeof(int32_t), cudaMemcpyHostToDevice))
-    {
-        std::cout << "Copied argmax input into argmax output" << std::endl;
-    }
+    // TODO: test which is faster -- memcpying inputs into outputs and moding in-place, or fill outputs element-by-element
+    // if(cudaSuccess == cudaMemcpy(outputs[1], inputs[2], iC*iH*iW*sizeof(int32_t), cudaMemcpyHostToDevice))
+    // {
+    //     std::cout << "Copied argmax input into argmax output" << std::endl;
+    // }
     int32_t* argmaxFrameOut = static_cast<int32_t*>(outputs[1]);
 
     if(inputDesc->type == nvinfer1::DataType::kFLOAT)
     {
-        if(cudaSuccess == cudaMemcpy(outputs[0], inputs[0], iC*iH*iW*sizeof(float), cudaMemcpyHostToDevice))
-        {
-            std::cout << "Copied max frame input into max frame output" << std::endl;
-        }
+        // if(cudaSuccess == cudaMemcpy(outputs[0], inputs[0], iC*iH*iW*sizeof(float), cudaMemcpyHostToDevice))
+        // {
+        //     std::cout << "Copied max frame input into max frame output" << std::endl;
+        // }
         float* maxFrameOut = static_cast<float*>(outputs[0]);
-        return horusUpdateMaxKernelLauncher(maxFrameOut, static_cast<const float*>(inputs[1]), argmaxFrameOut, mConvIdx, iC, iH, iW, stream);
+        return horusUpdateMaxKernelLauncher(static_cast<const float*>(inputs[0]), static_cast<const float*>(inputs[1]), static_cast<const int32_t*>(inputs[2]), mConvIdx, iC, iH, iW,
+                                            maxFrameOut, argmaxFrameOut, stream);
     }
     else if(inputDesc->type == nvinfer1::DataType::kHALF)
     {
-        if(cudaSuccess == cudaMemcpy(outputs[0], inputs[0], iC*iH*iW*sizeof(__half), cudaMemcpyHostToDevice))
-        {
-            std::cout << "Copied max frame input into max frame output" << std::endl;
-        }
+        // if(cudaSuccess == cudaMemcpy(outputs[0], inputs[0], iC*iH*iW*sizeof(__half), cudaMemcpyHostToDevice))
+        // {
+        //     std::cout << "Copied max frame input into max frame output" << std::endl;
+        // }
         __half* maxFrameOut = static_cast<__half*>(outputs[0]);
-        return horusUpdateMaxKernelLauncher(maxFrameOut, static_cast<const __half*>(inputs[1]), argmaxFrameOut, mConvIdx, iC, iH, iW, stream);
+        return horusUpdateMaxKernelLauncher(static_cast<const __half*>(inputs[0]), static_cast<const __half*>(inputs[1]), static_cast<const int32_t*>(inputs[2]), mConvIdx, iC, iH, iW,
+                                            maxFrameOut, argmaxFrameOut, stream);
     }
 }
 

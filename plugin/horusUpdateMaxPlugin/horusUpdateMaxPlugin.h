@@ -17,7 +17,7 @@ namespace plugin
 {
 
 template <typename T>
-cudaError_t horusUpdateMaxKernelLauncher(T* max_frame, const T* to_compare, int32_t* argmax_frame, const int32_t conv_idx, int iC, int iH, int iW, cudaStream_t stream);
+cudaError_t horusUpdateMaxKernelLauncher(const T* maxFrameIn, const T* toCompare, const int32_t* argmaxFrameIn, const int32_t convIdx, int iC, int iH, int iW, T* maxFrameOut, int32_t* argmaxFrameOut, cudaStream_t stream);
 
 class HorusUpdateMaxPlugin final : public nvinfer1::IPluginV2DynamicExt
 {
