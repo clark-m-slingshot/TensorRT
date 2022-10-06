@@ -45,6 +45,9 @@ endif()
 
 set(CMAKE_SKIP_BUILD_RPATH True)
 
+# use conda nvcc 
+set(CMAKE_CUDA_COMPILER "$ENV{CONDA_PREFIX}/bin/nvcc")
+
 project(TensorRT
         LANGUAGES CXX CUDA
         VERSION ${TRT_VERSION}
